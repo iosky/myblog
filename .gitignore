@@ -30,6 +30,12 @@ __pycache__
 db.sqlite3
 media
 
+
+#migration#
+
+api/migrations
+
+
 # Backup files #
 *.bak
 
