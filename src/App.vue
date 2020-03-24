@@ -1,8 +1,6 @@
 <template>
   <div id="app">
-    <div class="page-wrapper">
-      <router-view></router-view>
-    </div>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -23,10 +21,5 @@ html {
   padding: 0;
   width: 100%;
   height: 100%;
-}
-
-.page-wrapper {
-  overflow: hidden;
-  width: 100%;
 }
 </style>
