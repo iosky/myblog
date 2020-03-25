@@ -48,20 +48,16 @@
             class="article-card"
             v-for="val in articles"
           >
-            <template slot="title">
-              <router-link :to="{name: 'Home'}">{{val.title}}</router-link>
-            </template>
+            <template slot="title">{{val.title}}</template>
             <template slot="extra">
-              <router-link :to="{name: 'Home'}">阅读全文</router-link>
+              <router-link :to="{name: 'ArticleDetail' ,params: {pk: val.pk}}">阅读全文</router-link>
             </template>
             <template slot="actions">
               <icon-font name="Fire">{{val.views}}</icon-font>
               <icon-font name="date">{{val.created_time.substring(0,9)}}</icon-font>
             </template>
             <a-card-meta>
-              <template slot="description">
-                <router-link :to="{name: 'Home'}">{{val.excerpt}}</router-link>
-              </template>
+              <template slot="description">{{val.excerpt}}</template>
             </a-card-meta>
           </a-card>
         </a-layout-content>
@@ -86,9 +82,7 @@ export default {
     SearchBox
   },
   computed: {
-    ...mapGetters('category', ['categorys']),
-    ...mapGetters('tag', ['tags']),
-    ...mapGetters('article', ['articles'])
+    ...mapGetters(['categorys', 'tags', 'articles'])
   },
   beforeMount() {
     // 获取屏幕高度，设置content的最小高度

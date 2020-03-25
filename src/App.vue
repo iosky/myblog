@@ -8,9 +8,9 @@
 export default {
   name: 'app',
   created() {
-    this.$store.dispatch('tag/getTags')
-    this.$store.dispatch('category/getCategorys')
-    this.$store.dispatch('article/getArticles')
+    this.$store.dispatch('getTags')
+    this.$store.dispatch('getCategorys')
+    this.$store.dispatch('getArticles')
   }
 }
 </script>

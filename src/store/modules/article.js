@@ -7,6 +7,9 @@ const state = {
 const getters = {
   articles: state => {
     return state.articles
+  },
+  getArticleByPk: state => pk => {
+    return state.articles.find(article => pk === article.pk)
   }
 }
 
@@ -40,7 +43,6 @@ const actions = {
 }
 
 export default {
-  namespaced: true,
   state,
   getters,
   mutations,

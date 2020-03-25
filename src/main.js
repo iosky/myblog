@@ -18,6 +18,8 @@ Vue.use(Card)
 import IconFont from './components/IconFont'
 Vue.component('IconFont', IconFont)
 
+// 引入markdown
+
 Vue.config.productionTip = false
 
 new Vue({
