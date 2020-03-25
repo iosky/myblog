@@ -10,6 +10,7 @@ export default {
   created() {
     this.$store.dispatch('tag/getTags')
     this.$store.dispatch('category/getCategorys')
+    this.$store.dispatch('article/getArticles')
   }
 }
 </script>
