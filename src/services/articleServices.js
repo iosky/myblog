@@ -1,19 +1,18 @@
 import api from './index'
 
-
-function fetchArticles() {
+export function fetchArticles() {
   return api.get(`article/`).then(res => res.data)
 }
 
-function getArticleByPk(pk){
+export function getArticleByPk(pk) {
   return api.get(`article/${pk}`).then(res => res.data)
 }
 
-function postArticle(val) {
+export function postArticle(val) {
   return api.post(`article/`).then(res => res.data)
 }
 
-function delArticle(pk) {
+export function delArticle(pk) {
   return api.delete(`article/${pk}`).then(res => res.data)
 }
 

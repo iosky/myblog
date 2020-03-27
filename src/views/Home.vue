@@ -19,20 +19,7 @@
             <a-menu
               id="nav"
               mode="horizontal"
-            >
-              <a-sub-menu title="主题">
-                <a-menu-item
-                  :key="val.pk"
-                  v-for="val in categorys"
-                >{{val.name}}</a-menu-item>
-              </a-sub-menu>
-              <a-sub-menu title="标签">
-                <a-menu-item
-                  :key="val.pk"
-                  v-for="val in tags"
-                >{{val.name}}</a-menu-item>
-              </a-sub-menu>
-            </a-menu>
+            ></a-menu>
           </a-col>
         </a-row>
       </a-layout-header>
@@ -41,25 +28,51 @@
           :style="{minHeight: `${contentMinHeight}px`}"
           id="content"
         >
-          <a-card
-            :bordered="false"
-            :hoverable="true"
-            :key="val.pk"
-            class="article-card"
-            v-for="val in articles"
+          <a-list
+            :dataSource="articles"
+            itemLayout="vertical"
+            size="large"
           >
-            <template slot="title">{{val.title}}</template>
-            <template slot="extra">
-              <router-link :to="{name: 'ArticleDetail' ,params: {pk: val.pk}}">阅读全文</router-link>
-            </template>
-            <template slot="actions">
-              <icon-font name="Fire">{{val.views}}</icon-font>
-              <icon-font name="date">{{val.created_time.substring(0,9)}}</icon-font>
-            </template>
-            <a-card-meta>
-              <template slot="description">{{val.excerpt}}</template>
-            </a-card-meta>
-          </a-card>
+            <div
+              slot="footer"
+              style="textAlign: center"
+              v-if="!articlesLoading"
+            >
+              <b>我们也是有底线的！！！</b>
+            </div>
+            <a-list-item
+              key="item.pk"
+              slot="renderItem"
+              slot-scope="item,index"
+            >
+              <img
+                alt="logo"
+                slot="extra"
+                src="../assets/articlelogo.jpg"
+                v-if="!articlesLoading"
+                width="272"
+              />
+              <a-skeleton
+                :loading="articlesLoading"
+                active
+                avatar
+              >
+                <a-list-item-meta>
+                  <template slot="description">
+                    <span>{{item.excerpt}}</span>
+                  </template>
+                  <router-link
+                    :to="{name: 'ArticleDetail', params: {pk: item.pk}}"
+                    slot="title"
+                  >{{item.title}}</router-link>
+                  <a-avatar
+                    slot="avatar"
+                    src="../assets/articlelogo.jpg"
+                  ></a-avatar>
+                </a-list-item-meta>
+              </a-skeleton>
+            </a-list-item>
+          </a-list>
         </a-layout-content>
         <a-layout-sider></a-layout-sider>
       </a-layout>
@@ -70,21 +83,35 @@
 
 <script>
 import SearchBox from '../components/SearchBox'
+import { fetchArticles } from '../services/articleServices'
 export default {
   name: 'Home',
   data() {
     return {
-      contentMinHeight: 0
+      contentMinHeight: 0,
+      articles: [1, 2, 3],
+      articlesLoading: true
     }
   },
   components: {
     SearchBox
   },
   computed: {},
+  methods: {
+    getAllArticles() {
+      fetchArticles().then(data => {
+        this.articles = data
+        this.articlesLoading = false
+      })
+    }
+  },
   beforeMount() {
     // 获取屏幕高度，设置content的最小高度
     let bodyHeight = document.documentElement.clientHeight || document.body.clientHeight
     this.contentMinHeight = bodyHeight - 173
+
+    // 获取所有文章信息
+    this.getAllArticles()
   }
 }
 </script>
@@ -131,6 +158,7 @@ export default {
   #content {
     background: #fff;
     margin-right: 20px;
+    padding: 0 20px;
 
     .article-card {
       margin-bottom: 10px;
