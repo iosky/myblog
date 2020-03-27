@@ -6,12 +6,7 @@
 
 <script>
 export default {
-  name: 'app',
-  created() {
-    this.$store.dispatch('getTags')
-    this.$store.dispatch('getCategorys')
-    this.$store.dispatch('getArticles')
-  }
+  name: 'app'
 }
 </script>
 

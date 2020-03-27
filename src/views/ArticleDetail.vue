@@ -20,9 +20,5 @@ export default {
   components: {
     VueMarkdown
   },
-  mounted() {
-    this.pk = this.$route.params.pk
-    this.article = this.$store.getters.getArticleByPk(this.pk)
-  }
 }
 </script>

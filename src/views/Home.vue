@@ -70,7 +70,6 @@
 
 <script>
 import SearchBox from '../components/SearchBox'
-import { mapGetters } from 'vuex'
 export default {
   name: 'Home',
   data() {
@@ -81,9 +80,7 @@ export default {
   components: {
     SearchBox
   },
-  computed: {
-    ...mapGetters(['categorys', 'tags', 'articles'])
-  },
+  computed: {},
   beforeMount() {
     // 获取屏幕高度，设置content的最小高度
     let bodyHeight = document.documentElement.clientHeight || document.body.clientHeight

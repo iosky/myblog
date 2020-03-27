@@ -1,7 +1,12 @@
 import api from './index'
 
+
 function fetchArticles() {
   return api.get(`article/`).then(res => res.data)
+}
+
+function getArticleByPk(pk){
+  return api.get(`article/${pk}`).then(res => res.data)
 }
 
 function postArticle(val) {
@@ -14,6 +19,7 @@ function delArticle(pk) {
 
 export default {
   fetchArticles,
+  getArticleByPk,
   postArticle,
   delArticle
 }
