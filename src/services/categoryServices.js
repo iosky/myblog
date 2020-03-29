@@ -1,14 +1,14 @@
 import api from './index'
 
-function fetchCategorys() {
+export function fetchCategorys() {
   return api.get(`category/`).then(res => res.data)
 }
 
-function postCategory(val) {
+export function postCategory(val) {
   return api.post(`category/`).then(res => res.data)
 }
 
-function delCategory(pk) {
+export function delCategory(pk) {
   return api.delete(`category/${pk}`).then(res => res.data)
 }
 

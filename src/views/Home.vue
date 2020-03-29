@@ -1,74 +1,44 @@
 <template>
   <div class="home">
     <a-layout>
-      <a-layout-header class="header">
-        <a-row>
-          <a-col :span="4">
-            <router-link
-              :to="{name: 'Home'}"
-              id="logo"
-            >
-              <img
-                alt="Iosky's Blog"
-                src="../assets/logo.png"
-              />
-            </router-link>
-          </a-col>
-          <a-col :span="20">
-            <search-box id="search-box"></search-box>
-            <a-menu
-              id="nav"
-              mode="horizontal"
-            ></a-menu>
-          </a-col>
-        </a-row>
-      </a-layout-header>
       <a-layout class="content-wrapper">
-        <a-layout-content
-          :style="{minHeight: `${contentMinHeight}px`}"
-          id="content"
-        >
+        <a-layout-content id="content">
           <a-list
             :dataSource="articles"
+            :split="false"
             itemLayout="vertical"
             size="large"
           >
-            <div
-              slot="footer"
-              style="textAlign: center"
-              v-if="!articlesLoading"
-            >
-              <b>我们也是有底线的！！！</b>
-            </div>
             <a-list-item
+              class="article-card"
               key="item.pk"
               slot="renderItem"
               slot-scope="item,index"
             >
-              <img
-                alt="logo"
-                slot="extra"
-                src="../assets/articlelogo.jpg"
-                v-if="!articlesLoading"
-                width="272"
-              />
+              <template slot="extra">
+                <div class="img-box">
+                  <router-link :to="{name: 'ArticleDetail', params: {Apk: item.pk}}">
+                    <img
+                      alt="logo"
+                      src="../assets/articlelogo.jpg"
+                      v-if="!articlesLoading"
+                      width="264"
+                    />
+                  </router-link>
+                </div>
+              </template>
               <a-skeleton
                 :loading="articlesLoading"
                 active
-                avatar
               >
                 <a-list-item-meta>
                   <template slot="description">
                     <span>{{item.excerpt}}</span>
                   </template>
                   <router-link
-                    :to="{name: 'ArticleDetail', params: {pk: item.pk}}"
+                    :to="{name: 'ArticleDetail', params: {Apk: item.pk}}"
                     slot="title"
                   >{{item.title}}</router-link>
-                  <a-avatar
-                    slot="avatar"
-                    src="../assets/articlelogo.jpg"
-                  ></a-avatar>
                 </a-list-item-meta>
               </a-skeleton>
             </a-list-item>
@@ -88,7 +58,6 @@ export default {
   name: 'Home',
   data() {
     return {
-      contentMinHeight: 0,
       articles: [1, 2, 3],
       articlesLoading: true
     }
@@ -98,20 +67,21 @@ export default {
   },
   computed: {},
   methods: {
-    getAllArticles() {
+    fetchArticles() {
+      // 获取所有文章信息
       fetchArticles().then(data => {
         this.articles = data
         this.articlesLoading = false
       })
     }
   },
+  watch: {
+    // '$route.params.Cpk'(newVal, oldVal) {
+    //   this.$message.info(newVal)
+    // }
+  },
   beforeMount() {
-    // 获取屏幕高度，设置content的最小高度
-    let bodyHeight = document.documentElement.clientHeight || document.body.clientHeight
-    this.contentMinHeight = bodyHeight - 173
-
-    // 获取所有文章信息
-    this.getAllArticles()
+    this.fetchArticles()
   }
 }
 </script>
@@ -119,28 +89,11 @@ export default {
 <style lang="less">
 @fontColor: rgba(0, 0, 0, 0.65);
 @fontColorA: #1890ff;
-.header {
-  width: 100%;
-  height: 64px;
-  // position: fixed;
-  // z-index: 10;
-  background: #fff;
-  box-shadow: 0 2px 8px #f0f1f2;
-}
-#logo {
-  display: block;
-  line-height: 64px;
-  text-align: center;
-
-  img {
-    height: 32px;
-  }
-}
 
 #nav.ant-menu-horizontal {
-  float: right;
   margin-right: 25%;
   border: none;
+  line-height: 64px;
   .ant-menu-submenu {
     height: 64px;
     line-height: 60px;
@@ -148,39 +101,33 @@ export default {
   }
 }
 
-#search-box {
-  float: left;
-}
-
 .content-wrapper {
   padding: 20px 15%;
-
   #content {
-    background: #fff;
     margin-right: 20px;
-    padding: 0 20px;
-
+    min-height: calc(100% - 64px);
     .article-card {
       margin-bottom: 10px;
-      a {
-        color: @fontColor;
-        &:hover,
-        &:active {
-          color: @fontColorA;
-        }
+      background: #fff;
+      padding: 20px;
+      border-radius: 6px;
+      box-shadow: 0 2px 8px #f0f1f2;
+
+      span {
+        cursor: default;
       }
+    }
+  }
+  .img-box {
+    border-radius: 6px;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    transform: rotate(0deg);
+    img {
+      transition: all 0.5s;
 
-      .ant-card-actions {
-        display: flex;
-        flex-direction: row-reverse;
-        background: #fff;
-        border: none;
-        padding-left: 75%;
-
-        li {
-          border: none;
-          width: auto;
-        }
+      &:hover {
+        transform: scale(1.1);
       }
     }
   }
