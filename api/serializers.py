@@ -2,20 +2,20 @@ from .models import Tag, Category, Article
 from rest_framework import serializers
 
 
-class TagSerializer(serializers.HyperlinkedModelSerializer):
+class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
-        fields = ['url', 'name', 'created_time', 'modified_time', 'pk']
+        fields = ['pk','name']
 
 
-class CategorySerializer(serializers.HyperlinkedModelSerializer):
+class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ['url', 'name', 'created_time', 'modified_time', 'pk']
+        fields = ['pk','name']
 
 
-class ArticleSerializer(serializers.HyperlinkedModelSerializer):
+class ArticleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
-        fields = ['url', 'title', 'excerpt', 'content', 'views',
-                  'created_time', 'modified_time', 'category', 'tag', 'pk']
+        fields = ['pk','title', 'description', 'content', 'views',
+                  'created_time', 'modified_time', 'category', 'tag']
