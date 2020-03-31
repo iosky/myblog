@@ -42,7 +42,7 @@ export default {
     }
   },
 
-  beforeMount() {
+  created() {
     this.getArticleByPk()
   }
 }
@@ -52,5 +52,6 @@ export default {
 .article-detail {
   background: #fff;
   padding: 10px 20px;
+  box-shadow: -12px -3px 15px 0px rgba(0, 0, 0, 0.05);
 }
 </style>

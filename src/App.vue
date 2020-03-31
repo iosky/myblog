@@ -24,7 +24,7 @@
                 :key="val.pk"
                 v-for="val in categorys"
               >
-                <router-link :to="{name: 'FilterByC', params: { Cpk: val.pk }}">{{val.name}}</router-link>
+                <router-link :to="{name: 'Home', query:{ name: 'category', pk: val.pk}}">{{val.name}}</router-link>
               </a-menu-item>
             </a-menu>
           </a-col>
@@ -60,7 +60,7 @@ export default {
       Cookie.set('categoryPK', categoryPK)
     }
   },
-  beforeMount() {
+  created() {
     // 默认显示所有主题下的文章
     Cookie.set('categoryPK', -1)
     this.fetchCategorys()
@@ -83,7 +83,7 @@ html {
   height: 64px;
 
   background: #fff;
-  box-shadow: 0 2px 8px #f0f1f2;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.05);
   position: fixed;
   z-index: 3;
   top: 0;

@@ -33,7 +33,7 @@
               >
                 <a-list-item-meta>
                   <template slot="description">
-                    <span>{{item.excerpt}}</span>
+                    <span>{{item.description}}</span>
                   </template>
                   <router-link
                     :to="{name: 'ArticleDetail', params: {Apk: item.pk}}"
@@ -54,33 +54,63 @@
 <script>
 import SearchBox from '../components/SearchBox'
 import { fetchArticles } from '../services/articleServices'
+import AppVue from '../App.vue'
 export default {
   name: 'Home',
   data() {
     return {
       articles: [1, 2, 3],
-      articlesLoading: true
+      allArticles: [1, 2, 3],
+      articlesLoading: true,
+      filterName: null,
+      filterPk: null
     }
   },
   components: {
     SearchBox
   },
-  computed: {},
+  watch: {
+    /**
+     * 监控路由变化
+     */
+    $route(to, from) {
+      let flag = this.judgeFilter()
+      if (flag) {
+        this.articles = this.allArticles.filter(val => val[this.filterName] === this.filterPk)
+      }
+    }
+  },
   methods: {
+    /**
+     * 判断过滤信息是否有效
+     */
+    judgeFilter() {
+      this.filterName = this.$route.query.name
+      this.filterPk = Number(this.$route.query.pk)
+      let nameFlag = ['tag', 'category'].indexOf(this.filterName) !== -1
+      // 判断是否为正整数
+      let pkReg = new RegExp(/^[1-9]\d*$/)
+      let pkFlag = pkReg.test(this.filterPk)
+      return nameFlag && pkFlag
+    },
+    /**
+     * 通过分类选择获取相关文章
+     */
     fetchArticles() {
-      // 获取所有文章信息
+      let flag = this.judgeFilter()
       fetchArticles().then(data => {
-        this.articles = data
+        this.allArticles = data
+        if (flag) {
+          this.articles = data.filter(val => val[this.filterName] === this.filterPk)
+        } else {
+          this.articles = data
+        }
         this.articlesLoading = false
       })
     }
   },
-  watch: {
-    // '$route.params.Cpk'(newVal, oldVal) {
-    //   this.$message.info(newVal)
-    // }
-  },
-  beforeMount() {
+
+  created() {
     this.fetchArticles()
   }
 }
@@ -111,7 +141,7 @@ export default {
       background: #fff;
       padding: 20px;
       border-radius: 6px;
-      box-shadow: 0 2px 8px #f0f1f2;
+      box-shadow: 0 4px 4px rgba(0, 0, 0, 0.05);
 
       span {
         cursor: default;

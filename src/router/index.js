@@ -9,14 +9,7 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home,
-    children: [
-      {
-        path: '/category?pk=:Cpk',
-        name: 'FilterByC',
-        component: Home
-      }
-    ]
+    component: Home
   },
   {
     path: '/article/:Apk',
