@@ -1,8 +1,44 @@
 <template>
   <div class="home">
     <a-layout>
-      <a-layout class="content-wrapper">
-        <a-layout-content id="content">
+      <a-layout-header class="header">
+        <a-row>
+          <a-col :span="4">
+            <router-link
+              :to="{name: 'Home'}"
+              id="logo"
+            >
+              <img
+                alt="Iosky's Blog"
+                src="../assets/logo.png"
+              />
+            </router-link>
+          </a-col>
+          <a-col :span="20">
+            <search-box id="search-box"></search-box>
+            <a-menu
+              id="nav"
+              mode="horizontal"
+            >
+              <a-menu-item
+                :key="val.pk"
+                v-for="val in categorys"
+              >
+                <router-link :to="{name: 'Home', query:{ name: 'category', pk: val.pk}}">{{val.name}}</router-link>
+              </a-menu-item>
+            </a-menu>
+          </a-col>
+        </a-row>
+      </a-layout-header>
+
+      <a-layout
+        class="content-wrapper"
+        style="marginTop: 64px;"
+      >
+        <a-layout-content
+          :style="{minHeight: `${contentMinHeight}px`}"
+          id="content"
+        >
           <a-list
             :dataSource="articles"
             :split="false"
@@ -13,7 +49,7 @@
               class="article-card"
               key="item.pk"
               slot="renderItem"
-              slot-scope="item,index"
+              slot-scope="item"
             >
               <template slot="extra">
                 <div class="img-box">
@@ -52,18 +88,20 @@
 </template>
 
 <script>
+import { fetchCategorys } from '../services/categoryServices'
 import SearchBox from '../components/SearchBox'
 import { fetchArticles } from '../services/articleServices'
-import AppVue from '../App.vue'
 export default {
   name: 'Home',
   data() {
     return {
+      contentMinHeight: 0,
       articles: [1, 2, 3],
       allArticles: [1, 2, 3],
       articlesLoading: true,
       filterName: null,
-      filterPk: null
+      filterPk: null,
+      categorys: null
     }
   },
   components: {
@@ -107,11 +145,24 @@ export default {
         }
         this.articlesLoading = false
       })
+    },
+    /**
+     * 获取所有的主题信息
+     */
+    fetchCategorys() {
+      fetchCategorys().then(data => {
+        this.categorys = data
+      })
     }
   },
-
   created() {
+    this.fetchCategorys()
     this.fetchArticles()
+  },
+  mounted() {
+    // 获取屏幕高度，设置content的最小高度
+    let bodyHeight = document.documentElement.clientHeight || document.body.clientHeight
+    this.contentMinHeight = bodyHeight - 173
   }
 }
 </script>
@@ -120,6 +171,28 @@ export default {
 @fontColor: rgba(0, 0, 0, 0.65);
 @fontColorA: #1890ff;
 
+.header {
+  width: 100%;
+  height: 64px;
+  background: #fff;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.05);
+  position: fixed;
+  z-index: 3;
+  top: 0;
+  left: 0;
+}
+#search-box {
+  float: left;
+}
+#logo {
+  display: block;
+  line-height: 64px;
+  text-align: center;
+
+  img {
+    height: 32px;
+  }
+}
 #nav.ant-menu-horizontal {
   margin-right: 25%;
   border: none;
