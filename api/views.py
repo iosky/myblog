@@ -3,6 +3,7 @@ from django.views.generic import TemplateView
 from rest_framework import viewsets
 from .serializers import TagSerializer, ArticleSerializer, CategorySerializer
 from .models import Tag, Category, Article
+from .filter import ArticleFilter
 
 # 设置vue项目入口
 index_view = never_cache(TemplateView.as_view(template_name='index.html'))
@@ -21,3 +22,4 @@ class CategoryViewSet(viewsets.ModelViewSet):
 class ArticleViewSet(viewsets.ModelViewSet):
     queryset = Article.objects.all()
     serializer_class = ArticleSerializer
+    filter_class = ArticleFilter

@@ -16,9 +16,14 @@ export function delArticle(pk) {
   return api.delete(`article/${pk}`).then(res => res.data)
 }
 
+export function filterArticle(title) {
+  return api.get(`/article/?title__icontains=${title}`).then(res => res.data)
+}
+
 export default {
   fetchArticles,
   getArticleByPk,
   postArticle,
-  delArticle
+  delArticle,
+  filterArticle
 }

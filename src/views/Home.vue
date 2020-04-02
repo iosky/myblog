@@ -6,6 +6,7 @@
           <a-col :span="4">
             <router-link
               :to="{name: 'Home'}"
+              @click.prevent="showAllArticles"
               id="logo"
             >
               <img
@@ -15,7 +16,10 @@
             </router-link>
           </a-col>
           <a-col :span="20">
-            <search-box id="search-box"></search-box>
+            <search-box
+              @filterArticle="setFilterArticle"
+              id="search-box"
+            ></search-box>
             <a-menu
               id="nav"
               mode="horizontal"
@@ -180,6 +184,14 @@ export default {
       fetchCategorys().then(data => {
         this.categorys = data
       })
+    },
+    //  显示过滤后的文件
+    setFilterArticle(articles) {
+      this.articles = articles
+    },
+    // 显示所有文章
+    showAllArticles() {
+      this.articles = this.allArticles
     }
   },
   created() {

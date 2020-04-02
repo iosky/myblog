@@ -6,9 +6,7 @@
       mode="out-in"
       name="router-view-transition "
     >
-      <keep-alive>
-        <router-view></router-view>
-      </keep-alive>
+      <router-view></router-view>
     </transition>
   </div>
 </template>

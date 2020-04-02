@@ -1,5 +1,4 @@
 from django.db import models
-from django.urls import reverse
 
 
 class Category(models.Model):
@@ -34,7 +33,7 @@ class Article(models.Model):
     title = models.CharField('标题', max_length=100)
     description = models.TextField('摘要', max_length=200, blank=True, help_text='默认取文章内容的前100个字符')
     content = models.TextField('内容')
-    views = models.PositiveIntegerField(default=0, editable=False)
+    like = models.PositiveIntegerField(default=0)
     created_time = models.DateTimeField('创建时间', auto_now_add=True)
     modified_time = models.DateTimeField('修改时间', auto_now=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='分类')

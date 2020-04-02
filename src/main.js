@@ -14,20 +14,20 @@ import {
   List,
   Skeleton,
   Avatar,
-  Divider
+  Divider,
+  Input
 } from 'ant-design-vue'
 
 Vue.use(Col)
 Vue.use(Row)
 Vue.use(Layout)
 Vue.use(Menu)
-Vue.use(Select)
 Vue.use(Icon)
 Vue.use(Card)
 Vue.use(List)
 Vue.use(Skeleton)
-Vue.use(Avatar)
 Vue.use(Divider)
+Vue.use(Input)
 
 Vue.config.productionTip = false
 

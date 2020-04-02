@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'api.apps.ApiConfig',
+    'django_filters',
     'rest_framework',
 ]
 
@@ -119,3 +120,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'dist')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'dist', 'static')
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',)  # 全局默认配置过滤
+}
