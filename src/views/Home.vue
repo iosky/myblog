@@ -32,13 +32,10 @@
       </a-layout-header>
 
       <a-layout
+        :style="{minHeight: `${contentMinHeight}px`, marginTop: '64px'}"
         class="content-wrapper"
-        style="marginTop: 64px;"
       >
-        <a-layout-content
-          :style="{minHeight: `${contentMinHeight}px`}"
-          id="content"
-        >
+        <a-layout-content id="content">
           <a-list
             :dataSource="articles"
             :split="false"
@@ -80,8 +77,14 @@
             </a-list-item>
           </a-list>
         </a-layout-content>
-        <a-layout-sider></a-layout-sider>
+        <a-layout-sider
+          :style="{background: 'transparent', height: 'auto'}"
+          width="300"
+        >
+          <home-sider></home-sider>
+        </a-layout-sider>
       </a-layout>
+
       <a-layout-footer :style="{textAlign: 'center'}">Iosky's Blog ©2020 Created by Iosky</a-layout-footer>
     </a-layout>
   </div>
@@ -89,8 +92,10 @@
 
 <script>
 import { fetchCategorys } from '../services/categoryServices'
-import SearchBox from '../components/SearchBox'
 import { fetchArticles } from '../services/articleServices'
+
+import SearchBox from '../components/SearchBox'
+import HomeSider from '../components/HomeSider'
 export default {
   name: 'Home',
   data() {
@@ -101,11 +106,14 @@ export default {
       articlesLoading: true,
       filterName: null,
       filterPk: null,
-      categorys: null
+      categorys: null,
+      articleNum: 123,
+      effectNum: 345
     }
   },
   components: {
-    SearchBox
+    SearchBox,
+    HomeSider
   },
   watch: {
     /**
@@ -209,17 +217,6 @@ export default {
   #content {
     margin-right: 20px;
     min-height: calc(100% - 64px);
-    .article-card {
-      margin-bottom: 10px;
-      background: #fff;
-      padding: 20px;
-      border-radius: 6px;
-      box-shadow: 0 4px 4px rgba(0, 0, 0, 0.05);
-
-      span {
-        cursor: default;
-      }
-    }
   }
   .img-box {
     border-radius: 6px;
@@ -233,6 +230,17 @@ export default {
         transform: scale(1.1);
       }
     }
+  }
+}
+.article-card {
+  margin-bottom: 10px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 6px;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.05);
+
+  span {
+    cursor: default;
   }
 }
 </style>
