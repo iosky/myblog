@@ -479,10 +479,12 @@
             <template slot="description">
               <span>{{item.description}}</span>
             </template>
-            <router-link
-              :to="{name: 'ArticleDetail', params: {Apk: item.pk}}"
-              slot="title"
-            >{{item.title}}</router-link>
+            <template v-if="item">
+              <router-link
+                :to="{name: 'ArticleDetail', params: {Apk: item.pk}}"
+                slot="title"
+              >{{item.title}}</router-link>
+            </template>
           </a-list-item-meta>
         </a-skeleton>
       </a-list-item>

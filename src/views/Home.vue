@@ -10,7 +10,7 @@
             >
               <img
                 alt="Iosky's Blog"
-                src="../assets/logo.png"
+                src="~@/assets/logo.png"
               />
             </router-link>
           </a-col>
@@ -37,8 +37,10 @@
       >
         <a-layout-content id="content">
           <a-list
+            :class="{fadeIn: listFadeI, fadeOut: listFadeO}"
             :dataSource="articles"
             :split="false"
+            class="animated faster"
             itemLayout="vertical"
             size="large"
           >
@@ -50,14 +52,19 @@
             >
               <template slot="extra">
                 <div class="img-box">
-                  <router-link :to="{name: 'ArticleDetail', params: {Apk: item.pk}}">
-                    <img
-                      alt="logo"
-                      src="../assets/articlelogo.jpg"
-                      v-if="!articlesLoading"
-                      width="264"
-                    />
-                  </router-link>
+                  <template v-if="item">
+                    <router-link
+                      :to="{name: 'ArticleDetail', params: {Apk: item.pk}}"
+                      slot="title"
+                    >
+                      <img
+                        alt="logo"
+                        src="~@/assets/articlelogodefault.png"
+                        v-if="!articlesLoading"
+                        width="200"
+                      />
+                    </router-link>
+                  </template>
                 </div>
               </template>
               <a-skeleton
@@ -68,10 +75,12 @@
                   <template slot="description">
                     <span>{{item.description}}</span>
                   </template>
-                  <router-link
-                    :to="{name: 'ArticleDetail', params: {Apk: item.pk}}"
-                    slot="title"
-                  >{{item.title}}</router-link>
+                  <template v-if="item">
+                    <router-link
+                      :to="{name: 'ArticleDetail', params: {Apk: item.pk}}"
+                      slot="title"
+                    >{{item.title}}</router-link>
+                  </template>
                 </a-list-item-meta>
               </a-skeleton>
             </a-list-item>
@@ -108,7 +117,9 @@ export default {
       filterPk: null,
       categorys: null,
       articleNum: 123,
-      effectNum: 345
+      effectNum: 345,
+      listFadeI: true,
+      listFadeO: false
     }
   },
   components: {
@@ -121,9 +132,17 @@ export default {
      */
     $route(to, from) {
       let flag = this.judgeFilter()
-      if (flag) {
-        this.articles = this.allArticles.filter(val => val[this.filterName] === this.filterPk)
-      }
+      // 路由变化之后，开始过滤信息, list消失
+      this.listFadeO = true
+      setTimeout(() => {
+        if (flag) {
+          this.articles = this.allArticles.filter(val => val[this.filterName] === this.filterPk)
+        } else {
+          this.articles = this.allArticles
+        }
+        this.listFadeI = true
+        this.listFadeO = false
+      }, 500)
     }
   },
   methods: {
@@ -176,9 +195,6 @@ export default {
 </script>
 
 <style lang="less">
-@fontColor: rgba(0, 0, 0, 0.65);
-@fontColorA: #1890ff;
-
 .header {
   width: 100%;
   height: 64px;
@@ -198,7 +214,7 @@ export default {
   text-align: center;
 
   img {
-    height: 32px;
+    height: 55px;
   }
 }
 #nav.ant-menu-horizontal {
@@ -217,19 +233,6 @@ export default {
   #content {
     margin-right: 20px;
     min-height: calc(100% - 64px);
-  }
-  .img-box {
-    border-radius: 6px;
-    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.15);
-    overflow: hidden;
-    transform: rotate(0deg);
-    img {
-      transition: all 0.5s;
-
-      &:hover {
-        transform: scale(1.1);
-      }
-    }
   }
 }
 .article-card {
