@@ -15,7 +15,7 @@
               />
             </router-link>
           </a-col>
-          <a-col :span="20">
+          <a-col :span="16">
             <search-box
               @filterArticle="setFilterArticle"
               id="search-box"
@@ -31,6 +31,16 @@
                 <router-link :to="{name: 'Home', query:{ name: 'category', pk: val.pk}}">{{val.name}}</router-link>
               </a-menu-item>
             </a-menu>
+          </a-col>
+          <a-col :span="4">
+            <template v-if="!userLogin">
+              <router-link :to="{name: 'UserManage', params:{UMpk: '1'}}">登录</router-link>
+              <a-divider type="vertical" />
+              <router-link :to="{name: 'UserManage', params: {UMpk: '2'}}">注册</router-link>
+            </template>
+            <template v-else>
+              <router-link :to="{name: 'UserDetail', params: {Upk: userPk}}">个人信息</router-link>
+            </template>
           </a-col>
         </a-row>
       </a-layout-header>
@@ -54,6 +64,15 @@
               slot="renderItem"
               slot-scope="item"
             >
+              <template slot="actions">
+                <span>
+                  <a-icon
+                    style="margin-right: 8px"
+                    type="like-o"
+                  />
+                  {{item.like}}
+                </span>
+              </template>
               <template slot="extra">
                 <div class="img-box">
                   <template v-if="item">
@@ -106,6 +125,7 @@
 <script>
 import { fetchCategorys } from '../services/categoryServices'
 import { fetchArticles } from '../services/articleServices'
+import { fetchComments } from '../services/commentSevices'
 
 import SearchBox from '../components/SearchBox'
 import HomeSider from '../components/HomeSider'
@@ -123,7 +143,9 @@ export default {
       articleNum: 123,
       effectNum: 345,
       listFadeI: true,
-      listFadeO: false
+      listFadeO: false,
+      userLogin: false,
+      userPk: -1
     }
   },
   components: {
@@ -192,11 +214,18 @@ export default {
     // 显示所有文章
     showAllArticles() {
       this.articles = this.allArticles
+    },
+    judgeLogin() {
+      this.userPk = this.$cookie.get('pk')
+      if (this.userPk && this.userPk != -1) {
+        this.userLogin = true
+      }
     }
   },
   created() {
     this.fetchCategorys()
     this.fetchArticles()
+    this.judgeLogin()
   },
   mounted() {
     // 获取屏幕高度，设置content的最小高度

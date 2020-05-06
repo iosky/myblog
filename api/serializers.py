@@ -1,4 +1,4 @@
-from .models import Tag, Category, Article
+from .models import Tag, Category, Article, User, Comment
 from rest_framework import serializers
 
 
@@ -19,3 +19,15 @@ class ArticleSerializer(serializers.ModelSerializer):
         model = Article
         fields = ['pk', 'title', 'description', 'content', 'like',
                   'created_time', 'modified_time', 'category', 'tag']
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['pk', 'username', 'password', 'articles']
+
+
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ['pk', 'content', 'user', 'article']

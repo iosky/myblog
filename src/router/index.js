@@ -1,8 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import Home from '../views/Home'
 import ArticleDetail from '../views/ArticleDetail'
 import PageNotFound from '../views/PageNotFound'
+import UserManage from '../views/UserManage'
+import UserDetail from '../views/UserDetail'
 
 Vue.use(VueRouter)
 
@@ -13,9 +15,19 @@ const routes = [
     component: Home
   },
   {
+    path: '/usermanage/:UMpk',
+    name: 'UserManage',
+    component: UserManage
+  },
+  {
     path: '/article/:Apk',
     name: 'ArticleDetail',
     component: ArticleDetail
+  },
+  {
+    path: '/user/:Upk',
+    name: 'UserDetail',
+    component: UserDetail
   },
   {
     path: '/about',

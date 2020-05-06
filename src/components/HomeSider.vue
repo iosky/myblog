@@ -506,7 +506,11 @@ export default {
     // 获取点赞次数最多的三篇文章
     fetchArticles() {
       fetchArticles().then(data => {
-        this.articles = data.splice(0, 3)
+        this.articles = data
+          .sort((a, b) => {
+            return b.like - a.like
+          })
+          .splice(0, 3)
         this.articlesLoading = false
       })
     }
